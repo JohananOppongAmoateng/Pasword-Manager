@@ -1,61 +1,53 @@
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework import status
-from django.shortcuts import get_object_or_404,get_list_or_404
+from rest_framework.generics import ListAPIView,CreateAPIView,DestroyAPIView,RetrieveAPIView,UpdateAPIView
+from rest_framework.permissions import IsAuthenticated
+from django.shortcuts import get_list_or_404,get_object_or_404
 from .serializers import PasswordInfoSerializer
 from .models import PasswordInfo
 
 
+class PasswordInfoList(ListAPIView):
+    queryset = PasswordInfo.objects.all()
+    serializer_class = PasswordInfoSerializer
+    permission_classes = [IsAuthenticated]
 
-class AddPasswordInfo(APIView):
-    """
-    Add new password information
-    """
-    def post(self,request):
-        serializer = PasswordInfoSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data,status=status.HTTP_201_CREATED)
-        return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
+    def get_queryset(self):
+        user = self.request.user
+        return get_list_or_404(PasswordInfo,user=user)
+
+class AddPasswordInfo(CreateAPIView):
+    queryset = PasswordInfo.objects.all()
+    serializer_class = PasswordInfoSerializer
+    permission_classes = [IsAuthenticated]
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
 
+class RetrievePasswordInfo(RetrieveAPIView):
+    queryset = PasswordInfo.objects.all()
+    serializer_class = PasswordInfoSerializer
+    permission_classes = [IsAuthenticated]
 
-class RetrievePasswordInfo(APIView):
-    """
-    Retrieves password information using an id
-    """
-    def get(self,request,id):
-        passwordinfo = get_object_or_404(PasswordInfo,pk=id,user=request.user)
-        serializer = PasswordInfoSerializer(passwordinfo)
-        return Response(serializer.data)
+    def get_queryset(self):
+        user = self.request.user
+        pk = self.kwargs['pk']
+        return get_object_or_404(PasswordInfo,pk=pk,user=user)
 
+class UpdatePasswordInfo(UpdateAPIView):
+    queryset = PasswordInfo.objects.all()
+    serializer_class = PasswordInfoSerializer
+    permission_classes = [IsAuthenticated]
+    
+    def get_queryset(self):
+        user = self.request.user
+        pk = self.kwargs['pk']
+        return get_object_or_404(PasswordInfo,pk=pk,user=user)
 
-class UpdatePasswordInfo(APIView):
-    """
-    Updates specific password information using an id
-    """
-    def put(self,request,id):
-        passwordinfo = get_object_or_404(PasswordInfo,pk=id,user=request.user)
-        serializer = PasswordInfoSerializer(passwordinfo,data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data,status=status.HTTP_200_OK)
-        return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
-
-
-class PasswordInfoList(APIView):
-    def get(self,request):
-        passwordinfolist = get_list_or_404(PasswordInfo,user=request.user)
-        serializer = PasswordInfoSerializer(passwordinfolist)
-        return Response(serializer.data)
-
-
-class DeletePasswordInfo(APIView):
-    def delete(self,request,id):
-        passwordinfo = get_object_or_404(PasswordInfo,pk=id,user=request.user)
-        passwordinfo.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
-
-        
+class DeletePasswordInfo(DestroyAPIView):
+    queryset = PasswordInfo.objects.all()
+    serializer_class = PasswordInfoSerializer
+    permission_classes = [IsAuthenticated]
+    
+    def get_queryset(self):
+        user = self.request.user
+        pk = self.kwargs['pk']
+        return get_object_or_404(PasswordInfo,pk=pk,user=user)
