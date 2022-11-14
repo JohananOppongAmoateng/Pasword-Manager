@@ -12,7 +12,7 @@ class PasswordInfo(models.Model):
     user = models.ForeignKey(get_user_model(),on_delete=models.CASCADE,related_name="passwordinfos")
     username = models.CharField(max_length=30)
 
-    def __str__(self) -> str:
+    def __str__(self):
         return self.password
 
     
