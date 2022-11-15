@@ -9,6 +9,7 @@ class PasswordInfoSerializer(serializers.ModelSerializer):
         fields = ["id","username","password","user","organization"]
 
 
+
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
