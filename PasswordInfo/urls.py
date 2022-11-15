@@ -4,7 +4,7 @@ from .views import PasswordInfoList,AddPasswordInfo,DeletePasswordInfo,RetrieveP
 
 urlpatterns = [
     path("addpassword",AddPasswordInfo.as_view()),
-    path("passwords/",PasswordInfoList.as_view()),
+    path("passwords",PasswordInfoList.as_view()),
     path('password/<int:pk>',RetrievePasswordInfo.as_view()),
     path('password/delete/<int:pk>',DeletePasswordInfo.as_view()),
     path('password/edit/<int:pk>',UpdatePasswordInfo.as_view())

@@ -18,5 +18,5 @@ from django.urls import path,include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('passwordmanager/v0.0.1',include("PasswordInfo.urls"))
+    path('passwordmanager/v0.0.1/',include("PasswordInfo.urls"))
 ]
