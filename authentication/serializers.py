@@ -15,7 +15,6 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
 
 class RegisterUserSerializer(serializers.ModelSerializer):
     email = serializers.EmailField(required = True,validators=[UniqueValidator(queryset=User.objects.all())])
-
     password = serializers.CharField(required = True,write_only=True,validators=[validate_password]
     )
     password2 = serializers.CharField(required = True,write_only=True)
@@ -27,6 +26,7 @@ class RegisterUserSerializer(serializers.ModelSerializer):
     def validate(self, attrs):
         if attrs['password'] != attrs['password2']:
             raise serializers.ValidationError("Password fields did not match")
+        return attrs
 
     def create(self, validated_data):
         user = User.objects.create(
@@ -37,3 +37,4 @@ class RegisterUserSerializer(serializers.ModelSerializer):
         )
         user.set_password(validated_data['password'])
         user.save()
+        return user
