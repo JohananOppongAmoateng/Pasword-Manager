@@ -15,9 +15,22 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path,include
-
+# from rest_framework.schemas import get_schema_view
+# from django.views.generic import TemplateView
+# from rest_framework.documentation import include_docs_urls
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path("authentication/",include("authentications.urls")),
-    path('passwordmanager/v0.0.1/',include("PasswordInfo.urls"))
+    path("authentication/",include("authentication.urls")),
+    path('passwordmanager/v0.0.1/',include("PasswordInfo.urls")),
+    # path('docs',include_docs_urls(title='Password Manager')),
+    # path('openapi', get_schema_view(
+    #     description="API for saving passwords",
+    #      title="Password Manager",
+    #    version="0.0.1"
+    # ), name='openapi-schema'),
+
+    # path('api/', TemplateView.as_view(
+    #     template_name='swagger-ui.html',
+    #     extra_context={'schema_url':'openapi-schema'}
+    # ), name='swagger-ui'),
 ]
