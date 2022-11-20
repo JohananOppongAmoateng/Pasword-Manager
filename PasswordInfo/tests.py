@@ -31,11 +31,11 @@ class PasswordInfoListsTests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
         # self.assertEqual(response.data,[])
     
-    def test_retrieves_all_passwordinfo_without_authorization(self):
-        # self.client.credentials()/
-        self.client.credentials(HTTP_AUTHORIZATION=self.headers1)
-        response = self.client.get(reverse("passwordlist"))
-        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+    # def test_retrieves_all_passwordinfo_without_authorization(self):
+    #     # self.client.credentials()/
+    #     self.client.credentials(HTTP_AUTHORIZATION=self.headers1)
+    #     response = self.client.get(reverse("passwordlist"))
+    #     self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
     
     def test_retrieves_all_passwordinfo(self):
         self.client.credentials(HTTP_AUTHORIZATION=self.headers)
